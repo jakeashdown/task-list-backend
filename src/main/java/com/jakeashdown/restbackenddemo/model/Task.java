@@ -1,24 +1,25 @@
 package com.jakeashdown.restbackenddemo.model;
 
+import java.math.BigInteger;
 import java.util.List;
 
 public class Task {
-    private long id;
+    private BigInteger id;
     private String title;
     private List<Step> steps;
     // TODO: add status
 
-    public Task(long id, String title, List<Step> steps) {
+    public Task(BigInteger id, String title, List<Step> steps) {
         this.id = id;
         this.title = title;
         this.steps = steps;
     }
 
-    public long getId() {
+    public BigInteger getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(BigInteger id) {
         this.id = id;
     }
 

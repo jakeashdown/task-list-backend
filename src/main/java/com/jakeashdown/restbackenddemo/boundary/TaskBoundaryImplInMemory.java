@@ -3,21 +3,31 @@ package com.jakeashdown.restbackenddemo.boundary;
 import com.jakeashdown.restbackenddemo.model.Task;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigInteger;
+import java.util.*;
 
 @Component
 public class TaskBoundaryImplInMemory implements TaskBoundary {
-    @Override
-    public List<Task> getAllTasks() {
+
+    private Map<BigInteger, Task> tasks = new HashMap();
+
+    public TaskBoundaryImplInMemory() {
         // TODO: replace with actual data
         Task task = new Task(
-                1,
+                BigInteger.ONE,
                 "Get a job",
                 new ArrayList<>()
         );
-        List tasks = new ArrayList();
-        tasks.add(task);
-        return tasks;
+        tasks.put(task.getId(), task);
+    }
+
+    @Override
+    public List<Task> getAllTasks() {
+        return new ArrayList(tasks.values());
+    }
+
+    @Override
+    public Optional<Task> getTaskForId(BigInteger taskId) {
+        return Optional.ofNullable(tasks.get(taskId));
     }
 }
