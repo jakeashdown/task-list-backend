@@ -138,7 +138,7 @@ public class TaskControllerTest {
                 .getResponse();
 
         // Then
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
         String responseContent = response.getContentAsString();
         assertThat(responseContent).isEqualTo("123");
     }

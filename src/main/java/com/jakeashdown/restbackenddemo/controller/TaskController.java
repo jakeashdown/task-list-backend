@@ -4,6 +4,8 @@ import com.jakeashdown.restbackenddemo.boundary.TaskBoundary;
 import com.jakeashdown.restbackenddemo.model.Task;
 import com.jakeashdown.restbackenddemo.model.TaskWithId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
@@ -28,12 +30,11 @@ public class TaskController {
         return taskBoundary.getTaskForId(id);
     }
 
-    // TODO: make this return 201 Created
     @PostMapping("/task")
-    public BigInteger createTask(@RequestBody Task task) {
+    public ResponseEntity<BigInteger> createTask(@RequestBody Task task) {
         System.out.println("Creating task with title [" + task.getTitle() + "]...");
         BigInteger taskId = taskBoundary.createTaskReturningId(task.getTitle(), task.getDescription());
         System.out.println("Returning task ID [" + taskId + "]...");
-        return taskId;
+        return new ResponseEntity(taskId, HttpStatus.CREATED);
     }
 }
