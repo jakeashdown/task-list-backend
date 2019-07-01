@@ -40,7 +40,6 @@ public class TaskController {
     @DeleteMapping("/task/{id}")
     public void createOrUpdateTask(@PathVariable BigInteger id, @RequestBody Task task) {
         System.out.println("TaskController: PUT '/task/" + id + "' [" + task + "]");
-        final TaskWithId taskWithId = new TaskWithId(id, task);
-        taskBoundary.createOrUpdateTask(taskWithId);
+        taskBoundary.createOrUpdateTask(id, task);
     }
 }

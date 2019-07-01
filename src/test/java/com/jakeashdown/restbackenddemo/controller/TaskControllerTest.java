@@ -61,7 +61,7 @@ public class TaskControllerTest {
     }
 
     @Test
-    public void getAllTasksSuccess() throws Exception {
+    public void queryAllTasksSuccess() throws Exception {
         // Given
         List<TaskWithId> expectedTasks = new ArrayList();
         expectedTasks.add(taskWithId1);
@@ -83,7 +83,7 @@ public class TaskControllerTest {
     }
 
     @Test
-    public void getTaskForIdSuccessWithTaskForId() throws Exception {
+    public void queryTaskForIdSuccessWithTaskForId() throws Exception {
         // Given
         Mockito.when(taskBoundary.selectTaskForId(BigInteger.valueOf(1)))
                 .thenReturn(Optional.of(taskWithId1));
@@ -103,7 +103,7 @@ public class TaskControllerTest {
 
 
     @Test
-    public void getTaskForIdSuccessWithoutTaskForId() throws Exception {
+    public void queryTaskForIdSuccessWithoutTaskForId() throws Exception {
         // Given
         Mockito.when(taskBoundary.selectTaskForId(BigInteger.valueOf(1))) // TODO: use matcher
                 .thenReturn(Optional.empty());
@@ -120,7 +120,7 @@ public class TaskControllerTest {
     }
 
     @Test
-    public void createTaskSuccess() throws Exception {
+    public void createTaskReturningIdSuccess() throws Exception {
         // Given
         final String title = "See your friends";
         final String description = "Book train to London";
@@ -131,8 +131,32 @@ public class TaskControllerTest {
         MockHttpServletResponse response = mvc
                 .perform(
                         post("/task")
-                        .content("{\"title\": \"" + title + "\", \"description\": \"" + description + "\"}")
-                        .contentType(MediaType.APPLICATION_JSON)
+                                .content("{\"title\": \"" + title + "\", \"description\": \"" + description + "\"}")
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andReturn()
+                .getResponse();
+
+        // Then
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
+        String responseContent = response.getContentAsString();
+        assertThat(responseContent).isEqualTo("123");
+    }
+
+    @Test
+    public void updateTaskSuccess() throws Exception {
+        // Given
+        final String title = "See your friends";
+        final String description = "Book train to London";
+        Mockito.when(taskBoundary.insertTaskReturningId(title, description))
+                .thenReturn(BigInteger.valueOf(123));
+
+        // When
+        MockHttpServletResponse response = mvc
+                .perform(
+                        post("/task")
+                                .content("{\"title\": \"" + title + "\", \"description\": \"" + description + "\"}")
+                                .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andReturn()
                 .getResponse();

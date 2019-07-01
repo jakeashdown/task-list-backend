@@ -1,5 +1,6 @@
 package com.jakeashdown.restbackenddemo.boundary;
 
+import com.jakeashdown.restbackenddemo.model.Task;
 import com.jakeashdown.restbackenddemo.model.TaskWithId;
 
 import java.math.BigInteger;
@@ -10,5 +11,5 @@ public interface TaskBoundary {
     public List<TaskWithId> selectAllTasks();
     public Optional<TaskWithId> selectTaskForId(BigInteger taskId);
     public BigInteger insertTaskReturningId(String title, String description);
-    public void createOrUpdateTask(TaskWithId task);
+    public void createOrUpdateTask(BigInteger id, Task task);
 }

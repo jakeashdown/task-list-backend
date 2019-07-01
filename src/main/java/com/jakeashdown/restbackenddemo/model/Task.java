@@ -9,6 +9,11 @@ public class Task {
 
     public Task() {}
 
+    public Task(String title, String description) {
+        this.title = title;
+        this.description = description;
+    }
+
     public String getTitle() {
         return title;
     }
