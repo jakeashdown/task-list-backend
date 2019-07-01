@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TaskBoundary {
-    public List<TaskWithId> getAllTasks();
-    public Optional<TaskWithId> getTaskForId(BigInteger taskId);
-    public BigInteger createTaskReturningId(String title, String description);
+    public List<TaskWithId> selectAllTasks();
+    public Optional<TaskWithId> selectTaskForId(BigInteger taskId);
+    public BigInteger insertTaskReturningId(String title, String description);
 }

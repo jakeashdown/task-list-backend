@@ -1,6 +1,5 @@
 package com.jakeashdown.restbackenddemo.boundary;
 
-import com.jakeashdown.restbackenddemo.model.Task;
 import com.jakeashdown.restbackenddemo.model.TaskWithId;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +15,7 @@ public class TaskBoundaryImplInMemory implements TaskBoundary {
     private Map<BigInteger, TaskWithId> tasks = new HashMap();
 
     public TaskBoundaryImplInMemory() {
+        // TODO: remove after testing
         final TaskWithId task1 = new TaskWithId(
                 BigInteger.valueOf(counter.incrementAndGet()),
                 "Get a job",
@@ -32,17 +32,20 @@ public class TaskBoundaryImplInMemory implements TaskBoundary {
     }
 
     @Override
-    public List<TaskWithId> getAllTasks() {
+    public List<TaskWithId> selectAllTasks() {
+        System.out.println("TaskBoundaryImplInMemory: selecting all tasks");
         return new ArrayList(tasks.values());
     }
 
     @Override
-    public Optional<TaskWithId> getTaskForId(BigInteger taskId) {
+    public Optional<TaskWithId> selectTaskForId(BigInteger taskId) {
+        System.out.println("TaskBoundaryImplInMemory: selecting task for ID [" + taskId + "]");
         return Optional.ofNullable(tasks.get(taskId));
     }
 
     @Override
-    public BigInteger createTaskReturningId(String title, String description) {
+    public BigInteger insertTaskReturningId(String title, String description) {
+        System.out.println("TaskBoundaryImplInMemory: inserting task with title [" + title + "]");
         final TaskWithId task = new TaskWithId(
             BigInteger.valueOf(counter.incrementAndGet()),
             title,

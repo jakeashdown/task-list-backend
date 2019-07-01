@@ -19,22 +19,22 @@ public class TaskController {
     TaskBoundary taskBoundary;
 
     @GetMapping("/task")
-    public List<TaskWithId> getAllTasks() {
-        System.out.println("Getting all tasks...");
-        return taskBoundary.getAllTasks();
+    public List<TaskWithId> queryAllTasks() {
+        System.out.println("TaskController: querying all tasks");
+        return taskBoundary.selectAllTasks();
     }
 
     @GetMapping("/task/{id}")
-    public Optional<TaskWithId> getTaskForId(@PathVariable BigInteger id) {
-        System.out.println("Getting task for ID [" + id + "]...");
-        return taskBoundary.getTaskForId(id);
+    public Optional<TaskWithId> queryTaskForId(@PathVariable BigInteger id) {
+        System.out.println("TaskController: querying task for ID [" + id + "]");
+        return taskBoundary.selectTaskForId(id);
     }
 
     @PostMapping("/task")
-    public ResponseEntity<BigInteger> createTask(@RequestBody Task task) {
-        System.out.println("Creating task with title [" + task.getTitle() + "]...");
-        BigInteger taskId = taskBoundary.createTaskReturningId(task.getTitle(), task.getDescription());
-        System.out.println("Returning task ID [" + taskId + "]...");
+    public ResponseEntity<BigInteger> mutateTaskReturningId(@RequestBody Task task) {
+        System.out.println("TaskController: mutating task with title [" + task.getTitle() + "]");
+        BigInteger taskId = taskBoundary.insertTaskReturningId(task.getTitle(), task.getDescription());
+        System.out.println("TaskController: returning task ID [" + taskId + "]");
         return new ResponseEntity(taskId, HttpStatus.CREATED);
     }
 }

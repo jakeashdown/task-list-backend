@@ -66,7 +66,7 @@ public class TaskControllerTest {
         List<TaskWithId> expectedTasks = new ArrayList();
         expectedTasks.add(taskWithId1);
         expectedTasks.add(taskWithId2);
-        Mockito.when(taskBoundary.getAllTasks())
+        Mockito.when(taskBoundary.selectAllTasks())
                 .thenReturn(expectedTasks);
 
         // When
@@ -85,7 +85,7 @@ public class TaskControllerTest {
     @Test
     public void getTaskForIdSuccessWithTaskForId() throws Exception {
         // Given
-        Mockito.when(taskBoundary.getTaskForId(BigInteger.valueOf(1)))
+        Mockito.when(taskBoundary.selectTaskForId(BigInteger.valueOf(1)))
                 .thenReturn(Optional.of(taskWithId1));
 
         // When
@@ -105,7 +105,7 @@ public class TaskControllerTest {
     @Test
     public void getTaskForIdSuccessWithoutTaskForId() throws Exception {
         // Given
-        Mockito.when(taskBoundary.getTaskForId(BigInteger.valueOf(1))) // TODO: use matcher
+        Mockito.when(taskBoundary.selectTaskForId(BigInteger.valueOf(1))) // TODO: use matcher
                 .thenReturn(Optional.empty());
 
         // When
@@ -124,7 +124,7 @@ public class TaskControllerTest {
         // Given
         final String title = "See your friends";
         final String description = "Book train to London";
-        Mockito.when(taskBoundary.createTaskReturningId(title, description))
+        Mockito.when(taskBoundary.insertTaskReturningId(title, description))
                 .thenReturn(BigInteger.valueOf(123));
 
         // When
