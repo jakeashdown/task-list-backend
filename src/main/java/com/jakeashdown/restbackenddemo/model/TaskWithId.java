@@ -11,6 +11,12 @@ public class TaskWithId extends Task {
         this.description = description;
     }
 
+    public TaskWithId(BigInteger id, Task task) {
+        this.id = id;
+        this.title = task.getTitle();
+        this.description = task.getDescription();
+    }
+
     public BigInteger getId() {
         return id;
     }

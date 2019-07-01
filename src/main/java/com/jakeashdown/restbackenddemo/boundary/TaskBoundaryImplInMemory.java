@@ -54,4 +54,10 @@ public class TaskBoundaryImplInMemory implements TaskBoundary {
         tasks.put(task.getId(), task);
         return task.getId();
     }
+
+    @Override
+    public void createOrUpdateTask(TaskWithId task) {
+        System.out.println("TaskBoundaryImplInMemory: creating or updating task with ID [" + task.getId() + "]");
+        tasks.put(task.getId(), task);
+    }
 }
