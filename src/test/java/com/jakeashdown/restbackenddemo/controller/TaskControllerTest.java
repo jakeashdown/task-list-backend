@@ -12,11 +12,11 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import javax.swing.text.html.Option;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +24,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TaskControllerTest {
@@ -38,6 +39,17 @@ public class TaskControllerTest {
     private JacksonTester<Task> jsonTask;
     private JacksonTester<List<Task>> jsonTasks;
 
+    private Task task1 = new Task(
+            BigInteger.valueOf(1),
+            "Get a job",
+            "Hopefully something you actually like"
+    );
+    private Task task2 = new Task(
+            BigInteger.valueOf(2),
+            "Climb 7a",
+            "Maybe 'Shakira'"
+    );
+
     @Before
     public void setup() {
         // Initializes the JacksonTester
@@ -51,20 +63,8 @@ public class TaskControllerTest {
     public void getAllTasksSuccess() throws Exception {
         // Given
         List<Task> expectedTasks = new ArrayList();
-        expectedTasks.add(
-                new Task(
-                        BigInteger.valueOf(1),
-                        "Get a job",
-                        new ArrayList<>()
-                )
-        );
-        expectedTasks.add(
-                new Task(
-                        BigInteger.valueOf(2),
-                        "$$$$$$$",
-                        new ArrayList<>()
-                )
-        );
+        expectedTasks.add(task1);
+        expectedTasks.add(task2);
         Mockito.when(taskBoundary.getAllTasks())
                 .thenReturn(expectedTasks);
 
@@ -84,13 +84,8 @@ public class TaskControllerTest {
     @Test
     public void getTaskForIdSuccessWithTaskForId() throws Exception {
         // Given
-        Task expectedTask = new Task(
-                BigInteger.ONE,
-                "Get a job",
-                new ArrayList<>()
-        );
         Mockito.when(taskBoundary.getTaskForId(BigInteger.valueOf(1)))
-                .thenReturn(Optional.of(expectedTask));
+                .thenReturn(Optional.of(task1));
 
         // When
         MockHttpServletResponse response = mvc
@@ -101,7 +96,7 @@ public class TaskControllerTest {
         // Then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(response.getContentAsString()).isEqualTo(
-                jsonTask.write(expectedTask).getJson()
+                jsonTask.write(task1).getJson()
         );
     }
 
@@ -121,5 +116,29 @@ public class TaskControllerTest {
         // Then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(response.getContentAsString()).isEqualTo("null");
+    }
+
+    @Test
+    public void createTaskSuccess() throws Exception {
+        // Given
+        final String title = "See your friends";
+        final String description = "Book train to London";
+        Mockito.when(taskBoundary.createTaskReturningId(title, description))
+                .thenReturn(BigInteger.valueOf(123));
+
+        // When
+        MockHttpServletResponse response = mvc
+                .perform(
+                        post("/task")
+                        .content("{\"title\": \"" + title + "\", \"description\": \"" + description + "\"}")
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andReturn()
+                .getResponse();
+
+        // Then
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        String responseContent = response.getContentAsString();
+        assertThat(responseContent).isEqualTo("123");
     }
 }

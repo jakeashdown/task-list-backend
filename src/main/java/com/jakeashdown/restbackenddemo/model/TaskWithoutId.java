@@ -1,25 +1,15 @@
 package com.jakeashdown.restbackenddemo.model;
 
-import java.math.BigInteger;
-
-public class Task {
-    private BigInteger id;
+// TODO: use inheritance
+public class TaskWithoutId {
     private String title;
-    private String description; // TODO: make optional
-    // TODO: add steps and status
+    private String description;
 
-    public Task(BigInteger id, String title, String description) {
-        this.id = id;
+    public TaskWithoutId() {}
+
+    public TaskWithoutId(String title, String description) {
         this.title = title;
         this.description = description;
-    }
-
-    public BigInteger getId() {
-        return id;
-    }
-
-    public void setId(BigInteger id) {
-        this.id = id;
     }
 
     public String getTitle() {
