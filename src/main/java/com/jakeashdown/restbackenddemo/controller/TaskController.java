@@ -37,7 +37,7 @@ public class TaskController {
         return new ResponseEntity(taskId, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/task/{id}")
+    @PutMapping("/task/{id}")
     public void createOrUpdateTask(@PathVariable BigInteger id, @RequestBody Task task) {
         System.out.println("TaskController: PUT '/task/" + id + "' [" + task + "]");
         taskBoundary.createOrUpdateTask(id, task);

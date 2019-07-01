@@ -2,6 +2,7 @@ package com.jakeashdown.restbackenddemo.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jakeashdown.restbackenddemo.boundary.TaskBoundary;
+import com.jakeashdown.restbackenddemo.model.Task;
 import com.jakeashdown.restbackenddemo.model.TaskWithId;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,8 +24,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TaskControllerTest {
@@ -145,25 +146,21 @@ public class TaskControllerTest {
 
     @Test
     public void updateTaskSuccess() throws Exception {
-        // Given
-        final String title = "See your friends";
-        final String description = "Book train to London";
-        Mockito.when(taskBoundary.insertTaskReturningId(title, description))
-                .thenReturn(BigInteger.valueOf(123));
-
         // When
+        final BigInteger id = BigInteger.valueOf(123);
+        final String newTitle = "See Dave, Will and Emma";
+        final String newDescription = "Book train to London with Yolanda";
         MockHttpServletResponse response = mvc
                 .perform(
-                        post("/task")
-                                .content("{\"title\": \"" + title + "\", \"description\": \"" + description + "\"}")
+                        put("/task/" + id)
+                                .content("{\"title\": \"" + newTitle + "\", \"description\": \"" + newDescription + "\"}")
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andReturn()
                 .getResponse();
 
         // Then
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
-        String responseContent = response.getContentAsString();
-        assertThat(responseContent).isEqualTo("123");
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        Mockito.verify(taskBoundary).createOrUpdateTask(eq(id), eq(new Task(newTitle, newDescription)));
     }
 }

@@ -29,4 +29,15 @@ public class Task {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Task) {
+            Task otherTask = (Task) obj;
+            return title.equals(otherTask.title )
+                    && description.equals(otherTask.description);
+        } else {
+            return false;
+        }
+    }
 }
