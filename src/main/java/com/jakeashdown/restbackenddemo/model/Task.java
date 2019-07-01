@@ -3,24 +3,11 @@ package com.jakeashdown.restbackenddemo.model;
 import java.math.BigInteger;
 
 public class Task {
-    private BigInteger id;
-    private String title;
-    private String description; // TODO: make optional
+    protected String title;
+    protected String description; // TODO: make optional
     // TODO: add steps and status
 
-    public Task(BigInteger id, String title, String description) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-    }
-
-    public BigInteger getId() {
-        return id;
-    }
-
-    public void setId(BigInteger id) {
-        this.id = id;
-    }
+    public Task() {}
 
     public String getTitle() {
         return title;

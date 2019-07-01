@@ -2,7 +2,7 @@ package com.jakeashdown.restbackenddemo.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jakeashdown.restbackenddemo.boundary.TaskBoundary;
-import com.jakeashdown.restbackenddemo.model.Task;
+import com.jakeashdown.restbackenddemo.model.TaskWithId;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,15 +36,16 @@ public class TaskControllerTest {
     @InjectMocks
     private TaskController controller;
 
-    private JacksonTester<Task> jsonTask;
-    private JacksonTester<List<Task>> jsonTasks;
+    // Initialized in setup()
+    private JacksonTester<TaskWithId> jsonTaskWithId;
+    private JacksonTester<List<TaskWithId>> jsonTasksWithId;
 
-    private Task task1 = new Task(
+    private TaskWithId taskWithId1 = new TaskWithId(
             BigInteger.valueOf(1),
             "Get a job",
             "Hopefully something you actually like"
     );
-    private Task task2 = new Task(
+    private TaskWithId taskWithId2 = new TaskWithId(
             BigInteger.valueOf(2),
             "Climb 7a",
             "Maybe 'Shakira'"
@@ -62,9 +63,9 @@ public class TaskControllerTest {
     @Test
     public void getAllTasksSuccess() throws Exception {
         // Given
-        List<Task> expectedTasks = new ArrayList();
-        expectedTasks.add(task1);
-        expectedTasks.add(task2);
+        List<TaskWithId> expectedTasks = new ArrayList();
+        expectedTasks.add(taskWithId1);
+        expectedTasks.add(taskWithId2);
         Mockito.when(taskBoundary.getAllTasks())
                 .thenReturn(expectedTasks);
 
@@ -77,7 +78,7 @@ public class TaskControllerTest {
         // Then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(response.getContentAsString()).isEqualTo(
-                jsonTasks.write(expectedTasks).getJson()
+                jsonTasksWithId.write(expectedTasks).getJson()
         );
     }
 
@@ -85,7 +86,7 @@ public class TaskControllerTest {
     public void getTaskForIdSuccessWithTaskForId() throws Exception {
         // Given
         Mockito.when(taskBoundary.getTaskForId(BigInteger.valueOf(1)))
-                .thenReturn(Optional.of(task1));
+                .thenReturn(Optional.of(taskWithId1));
 
         // When
         MockHttpServletResponse response = mvc
@@ -96,7 +97,7 @@ public class TaskControllerTest {
         // Then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(response.getContentAsString()).isEqualTo(
-                jsonTask.write(task1).getJson()
+                jsonTaskWithId.write(taskWithId1).getJson()
         );
     }
 
