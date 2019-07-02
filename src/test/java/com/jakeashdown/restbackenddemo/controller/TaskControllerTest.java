@@ -163,4 +163,18 @@ public class TaskControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         Mockito.verify(taskBoundary).createOrUpdateTask(eq(id), eq(new Task(newTitle, newDescription)));
     }
+
+    @Test
+    public void deleteTaskSuccess() throws Exception {
+        // When
+        final BigInteger id = BigInteger.valueOf(123);
+        MockHttpServletResponse response = mvc
+                .perform(delete("/task/" + id))
+                .andReturn()
+                .getResponse();
+
+        // Then
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        Mockito.verify(taskBoundary).deleteTask(eq(id));
+    }
 }

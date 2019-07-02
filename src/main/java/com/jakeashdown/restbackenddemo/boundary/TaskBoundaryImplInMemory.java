@@ -75,4 +75,10 @@ public class TaskBoundaryImplInMemory implements TaskBoundary {
         logger.info("creating or updating task with ID [" + id + "]");
         tasks.put(id, new TaskWithId(id, task));
     }
+
+    @Override
+    public void deleteTask(BigInteger id) {
+        logger.info("deleting task with ID [" + id + "]");
+        tasks.remove(id);
+    }
 }

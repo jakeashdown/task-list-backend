@@ -12,4 +12,5 @@ public interface TaskBoundary {
     public Optional<TaskWithId> selectTaskForId(BigInteger taskId);
     public BigInteger insertTaskReturningId(String title, String description);
     public void createOrUpdateTask(BigInteger id, Task task);
+    public void deleteTask(BigInteger id);
 }

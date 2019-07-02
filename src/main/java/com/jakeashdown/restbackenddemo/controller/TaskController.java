@@ -46,4 +46,10 @@ public class TaskController {
         logger.info("PUT '/task/" + id + "' [" + task + "]");
         taskBoundary.createOrUpdateTask(id, task);
     }
+
+    @DeleteMapping("/task/{id}")
+    public void deleteTask(@PathVariable BigInteger id) {
+        logger.info("DELETE '/task/" + id + "'");
+        taskBoundary.deleteTask(id);
+    }
 }
