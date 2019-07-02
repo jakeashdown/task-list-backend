@@ -4,7 +4,7 @@ This project was generated with [Spring Initializr](https://start.spring.io/).
 
 ## Development server
 
-Run './mvnw spring-boot:run' for a dev server. Navigate to `http://localhost:8080/`.
+Run `./mvnw spring-boot:run` for a dev server. Navigate to `http://localhost:8080/`.
 
 ## Running unit tests
 
