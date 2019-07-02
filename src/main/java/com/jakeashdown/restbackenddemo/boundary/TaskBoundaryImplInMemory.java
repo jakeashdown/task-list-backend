@@ -2,15 +2,22 @@ package com.jakeashdown.restbackenddemo.boundary;
 
 import com.jakeashdown.restbackenddemo.model.Task;
 import com.jakeashdown.restbackenddemo.model.TaskWithId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.math.BigInteger;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 @Component
 public class TaskBoundaryImplInMemory implements TaskBoundary {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final AtomicLong idCounter = new AtomicLong();
 
@@ -35,7 +42,7 @@ public class TaskBoundaryImplInMemory implements TaskBoundary {
 
     @Override
     public List<TaskWithId> selectAllTasks() {
-        System.out.println("TaskBoundaryImplInMemory: selecting all tasks");
+        logger.info("selecting all tasks");
         return tasks.keySet().stream()
                 .map(key -> new TaskWithId(key, tasks.get(key)))
                 .collect(Collectors.toList());
@@ -43,7 +50,7 @@ public class TaskBoundaryImplInMemory implements TaskBoundary {
 
     @Override
     public Optional<TaskWithId> selectTaskForId(BigInteger taskId) {
-        System.out.println("TaskBoundaryImplInMemory: selecting task for ID [" + taskId + "]");
+        logger.info("selecting task for ID [" + taskId + "]");
         if (tasks.containsKey(taskId)) {
             return Optional.of(new TaskWithId(taskId, tasks.get(taskId)));
         } else {
@@ -53,7 +60,7 @@ public class TaskBoundaryImplInMemory implements TaskBoundary {
 
     @Override
     public BigInteger insertTaskReturningId(String title, String description) {
-        System.out.println("TaskBoundaryImplInMemory: inserting task with title [" + title + "]");
+        logger.info("inserting task with title [" + title + "]");
         final Task task = new Task(
             title,
             description
@@ -65,7 +72,7 @@ public class TaskBoundaryImplInMemory implements TaskBoundary {
 
     @Override
     public void createOrUpdateTask(BigInteger id, Task task) {
-        System.out.println("TaskBoundaryImplInMemory: creating or updating task with ID [" + id + "]");
+        logger.info("creating or updating task with ID [" + id + "]");
         tasks.put(id, new TaskWithId(id, task));
     }
 }
